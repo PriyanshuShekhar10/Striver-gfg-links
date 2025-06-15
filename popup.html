@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        width: 280px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Helvetica Neue", sans-serif;
+        color: white;
+        border-radius: 12px;
+        overflow: hidden;
+        position: relative;
+      }
+
+      /* Animated background overlay */
+      body::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          45deg,
+          rgba(255, 255, 255, 0.1) 0%,
+          rgba(255, 255, 255, 0.05) 100%
+        );
+        pointer-events: none;
+      }
+
+      .container {
+        padding: 24px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 24px;
+      }
+
+      .header h3 {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 6px;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      .header .subtitle {
+        font-size: 13px;
+        opacity: 0.9;
+        font-weight: 400;
+      }
+
+      .toggle-container {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      }
+
+      .toggle-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+      }
+
+      .toggle-label {
+        font-size: 15px;
+        font-weight: 500;
+        color: white;
+      }
+
+      /* Enhanced Toggle Switch */
+      .toggle-switch {
+        position: relative;
+        width: 60px;
+        height: 32px;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 16px;
+        cursor: pointer;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .toggle-switch.active {
+        background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+        border-color: rgba(255, 255, 255, 0.4);
+        box-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
+      }
+
+      .toggle-slider {
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 24px;
+        height: 24px;
+        background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+        border-radius: 50%;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .toggle-switch.active .toggle-slider {
+        transform: translateX(28px);
+        box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3),
+          0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Icon inside toggle */
+      .toggle-slider::after {
+        content: "🔗";
+        font-size: 10px;
+        opacity: 0.6;
+        transition: all 0.3s ease;
+      }
+
+      .toggle-switch.active .toggle-slider::after {
+        opacity: 1;
+        transform: scale(1.1);
+      }
+
+      .status {
+        text-align: center;
+        font-size: 14px;
+        font-weight: 500;
+        padding: 12px 16px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        margin-bottom: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        transition: all 0.3s ease;
+      }
+
+      .status.enabled {
+        background: rgba(34, 197, 94, 0.2);
+        border-color: rgba(34, 197, 94, 0.3);
+        color: #dcfce7;
+      }
+
+      .status.disabled {
+        background: rgba(239, 68, 68, 0.2);
+        border-color: rgba(239, 68, 68, 0.3);
+        color: #fecaca;
+      }
+
+      .footer {
+        text-align: center;
+        opacity: 0.8;
+      }
+
+      .footer p {
+        font-size: 12px;
+        margin: 0;
+      }
+
+      /* Pulse animation for active state */
+      @keyframes pulse {
+        0% {
+          box-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
+        }
+        50% {
+          box-shadow: 0 0 30px rgba(34, 197, 94, 0.6);
+        }
+        100% {
+          box-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
+        }
+      }
+
+      .toggle-switch.active {
+        animation: pulse 2s infinite;
+      }
+
+      /* Hover effects */
+      .toggle-switch:hover {
+        transform: scale(1.05);
+      }
+
+      .toggle-switch:active {
+        transform: scale(0.95);
+      }
+
+      /* Loading state */
+      .loading {
+        opacity: 0.7;
+      }
+
+      .loading .toggle-switch {
+        pointer-events: none;
+      }
+
+      /* Disabled state styling */
+      .toggle-switch.disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none !important;
+      }
+
+      .toggle-switch.disabled:hover {
+        transform: none;
+      }
+
+      /* Smooth transitions for all elements */
+      * {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h3>🎯 TUF GFG Links</h3>
+        <p class="subtitle">GeeksforGeeks shortcuts for Striver sheets</p>
+      </div>
+
+      <div class="toggle-container">
+        <div class="toggle-row">
+          <span class="toggle-label">Enable Links</span>
+          <div class="toggle-switch" id="gfg-toggle">
+            <div class="toggle-slider"></div>
+          </div>
+        </div>
+
+        <div class="status" id="status">Checking status...</div>
+      </div>
+
+      <div class="footer">
+        <p>✨ Toggle to enable/disable ✨</p>
+      </div>
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>

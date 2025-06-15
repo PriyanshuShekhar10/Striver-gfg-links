@@ -1,0 +1,33 @@
+{
+  "manifest_version": 3,
+  "name": "TUF Striver Sheet GFG Links",
+  "version": "1.0.0",
+  "description": "Chrome extension that adds GeeksforGeeks links to TakeUForward Striver's DSA sheets",
+  
+  "permissions": [
+    "activeTab",
+    "scripting"
+  ],
+  
+  "content_scripts": [
+    {
+      "matches": [
+        "https://takeuforward.org/strivers-a2z-dsa-course/strivers-a2z-dsa-course-sheet-2*",
+        "https://takeuforward.org/interviews/strivers-sde-sheet-top-coding-interview-problems*",
+        "https://takeuforward.org/interview-sheets/strivers-79-last-moment-dsa-sheet-ace-interviews*",
+        "https://takeuforward.org/interviews/blind-75-leetcode-problems-detailed-video-solutions*"
+      ],
+      "js": ["content.js"],
+      "css": ["content.css"]
+    }
+  ],
+  
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "TUF Striver Sheet GFG Links"
+  },
+  
+  "host_permissions": [
+    "https://takeuforward.org/*"
+  ]
+} 
